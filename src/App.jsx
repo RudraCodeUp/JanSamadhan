@@ -8,6 +8,7 @@ import { Dashboard } from './components/dashboard/Dashboard';
 import { ComplaintList } from './components/complaints/ComplaintList';
 import { ComplaintMap } from './components/map/ComplaintMap';
 import { Analytics } from './components/analytics/Analytics';
+import Staff from './components/dashboard/Staff';
 
 function App() {
   const { isAuthenticated } = useAuthStore();
@@ -31,7 +32,7 @@ function App() {
             <Route path="/complaints" element={<ComplaintList />} />
             <Route path="/map" element={<ComplaintMap />} />
             <Route path="/analytics" element={<Analytics />} />
-            <Route path="/staff" element={<div className="p-6">Staff management coming soon...</div>} />
+            <Route path="/staff" element={<div className="p-6"><Staff /></div>} />
             <Route path="/emergency" element={<div className="p-6">Emergency alerts coming soon...</div>} />
             <Route path="/settings" element={<div className="p-6">Settings coming soon...</div>} />
           </Route>
