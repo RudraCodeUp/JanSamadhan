@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, X, User, Building2 } from 'lucide-react';
+import { Check, X, User, Building2, ChevronDown } from 'lucide-react';
 import { useComplaintStore } from '../../store/complaintStore';
 import { STATUSES, DEPARTMENTS } from '../../types';
 

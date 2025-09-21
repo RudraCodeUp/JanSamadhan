@@ -37,43 +37,51 @@ export const ComplaintTrends = ({ complaints }) => {
   const maxValue = Math.max(...monthlyData.map(d => d.total));
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-lg font-semibold mb-4">Monthly Complaint Trends</h2>
+    <div className="bg-white/60 w-full backdrop-blur-sm rounded-2xl border border-white/20 p-8 transition-all duration-300 hover:shadow-lg hover:bg-white/80">
+      <div className="flex items-center space-x-3 mb-8">
+        <div className="w-0.5 h-6 bg-gradient-to-b from-violet-400 to-purple-600 rounded-full"></div>
+        <h2 className="text-xl font-light text-slate-700">Monthly Trends</h2>
+      </div>
       
-      <div className="h-64 flex items-end space-x-2">
-        {monthlyData.map((data) => (
-          <div key={data.month} className="flex flex-col items-center flex-1">
-            <div className="w-full flex flex-col items-center">
+      <div className="h-72 flex items-end justify-center space-x-4 mb-8 px-4">
+        {monthlyData.map((data, index) => (
+          <div key={data.month} className="flex flex-col items-center flex-1 max-w-16 group">
+            <div className="w-full flex flex-col items-center relative">
               {/* Resolved complaints bar */}
               <div 
-                className="w-4/5 bg-green-500 rounded-t"
+                className="w-full bg-gradient-to-t from-emerald-500 to-emerald-400 rounded-t-lg shadow-sm transition-all duration-500 hover:shadow-md group-"
                 style={{ 
-                  height: `${(data.resolved / maxValue) * 160}px`
+                  height: `${Math.max((data.resolved / maxValue) * 200, 4)}px`
                 }}
               ></div>
               
-              {/* Total complaints bar (stacked) */}
+              {/* Pending complaints bar (stacked) */}
               <div 
-                className="w-4/5 bg-blue-500"
+                className="w-full bg-gradient-to-t from-blue-500 to-blue-400 shadow-sm transition-all duration-500 hover:shadow-md group-"
                 style={{ 
-                  height: `${((data.total - data.resolved) / maxValue) * 160}px`
+                  height: `${Math.max(((data.total - data.resolved) / maxValue) * 200, 4)}px`
                 }}
               ></div>
+              
+              {/* Hover tooltip */}
+              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+                Total: {data.total}
+              </div>
             </div>
-            <div className="text-xs mt-2">{data.month}</div>
-            <div className="text-xs text-gray-500">{data.total}</div>
+            <div className="text-xs font-medium text-slate-600 mt-3">{data.month}</div>
+            <div className="text-xs text-slate-400 font-light">{data.total}</div>
           </div>
         ))}
       </div>
       
-      <div className="mt-4 flex justify-center space-x-6">
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-          <span className="text-sm">Open</span>
+      <div className="flex justify-center space-x-8">
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-blue-400 rounded-full shadow-sm"></div>
+          <span className="text-sm font-medium text-slate-600">Open</span>
         </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-          <span className="text-sm">Resolved</span>
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full shadow-sm"></div>
+          <span className="text-sm font-medium text-slate-600">Resolved</span>
         </div>
       </div>
     </div>

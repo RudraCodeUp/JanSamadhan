@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { MapPin, Plus, Minus, Filter } from 'lucide-react';
+import { MapPinIcon, PlusIcon, MinusIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useComplaintStore } from '../../store/complaintStore';
 import { ComplaintMapMarker } from './ComplaintMapMarker';
 import { ComplaintCluster } from './ComplaintCluster';
@@ -77,7 +78,7 @@ export const ComplaintMap = () => {
           onClick={() => setShowFilters(!showFilters)}
           className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
         >
-          <Filter className="w-4 h-4" />
+          <FunnelIcon className="w-4 h-4" />
           <span>Filters</span>
         </button>
       </div>
@@ -96,13 +97,13 @@ export const ComplaintMap = () => {
               onClick={() => setZoom(Math.min(18, zoom + 1))}
               className="w-8 h-8 bg-white border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50 shadow-sm"
             >
-              <Plus className="w-4 h-4" />
+              <PlusIcon className="w-4 h-4" />
             </button>
             <button
               onClick={() => setZoom(Math.max(8, zoom - 1))}
               className="w-8 h-8 bg-white border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50 shadow-sm"
             >
-              <Minus className="w-4 h-4" />
+              <MinusIcon className="w-4 h-4" />
             </button>
           </div>
 
@@ -176,7 +177,7 @@ export const ComplaintMap = () => {
               onClick={() => setSelectedComplaint(null)}
               className="text-gray-400 hover:text-gray-600"
             >
-              ×
+              <XMarkIcon className="w-5 h-5" />
             </button>
           </div>
           
@@ -184,7 +185,7 @@ export const ComplaintMap = () => {
             <div>
               <p className="text-sm text-gray-600 mb-2">{selectedComplaint.description}</p>
               <div className="flex items-center space-x-2 text-sm text-gray-500">
-                <MapPin className="w-4 h-4" />
+                <MapPinIcon className="w-4 h-4" />
                 <span>{selectedComplaint.location.address}</span>
               </div>
             </div>

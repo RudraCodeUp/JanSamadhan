@@ -35,43 +35,69 @@ export const PerformanceMetrics = ({ complaints }) => {
     {
       title: "Total Complaints",
       value: totalComplaints,
-      color: "bg-blue-100 text-blue-800"
+      color: "from-blue-50 to-indigo-50",
+      textColor: "text-blue-700",
+      accent: "bg-blue-500"
     },
     {
       title: "Resolved",
       value: resolvedComplaints,
-      color: "bg-green-100 text-green-800"
+      color: "from-emerald-50 to-green-50",
+      textColor: "text-emerald-700",
+      accent: "bg-emerald-500"
     },
     {
       title: "Pending",
       value: pendingComplaints,
-      color: "bg-yellow-100 text-yellow-800"
+      color: "from-amber-50 to-yellow-50",
+      textColor: "text-amber-700",
+      accent: "bg-amber-500"
     },
     {
       title: "In Progress",
       value: inProgressComplaints,
-      color: "bg-purple-100 text-purple-800"
+      color: "from-violet-50 to-purple-50",
+      textColor: "text-violet-700",
+      accent: "bg-violet-500"
     },
     {
       title: "Resolution Rate",
       value: `${resolutionRate}%`,
-      color: "bg-indigo-100 text-indigo-800"
+      color: "from-indigo-50 to-blue-50",
+      textColor: "text-indigo-700",
+      accent: "bg-indigo-500"
     },
     {
       title: "Avg. Resolution Time",
       value: calculateAvgResolutionTime(),
-      color: "bg-pink-100 text-pink-800"
+      color: "from-rose-50 to-pink-50",
+      textColor: "text-rose-700",
+      accent: "bg-rose-500"
     }
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
       {metrics.map((metric) => (
-        <div key={metric.title} className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">{metric.title}</div>
-          <div className={`text-xl font-bold mt-1 px-2 py-1 rounded-md inline-block ${metric.color}`}>
-            {metric.value}
+        <div 
+          key={metric.title} 
+          className="group relative bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 p-6 transition-all duration-300 hover:shadow-lg hover:bg-white/80 hover:-translate-y-1"
+        >
+          {/* Accent line */}
+          <div className={`absolute top-0 left-0 right-0 h-0.5 ${metric.accent} rounded-t-2xl`}></div>
+          
+          {/* Content */}
+          <div className="space-y-3">
+            <div className="text-sm font-medium text-slate-600 tracking-wide">
+              {metric.title}
+            </div>
+            <div className={`text-2xl font-light ${metric.textColor} transition-colors duration-300`}>
+              {metric.value}
+            </div>
           </div>
+
+          {/* Subtle background gradient on hover */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${metric.color} rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300 pointer-events-none`}></div>
         </div>
       ))}
     </div>

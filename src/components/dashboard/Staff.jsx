@@ -176,53 +176,55 @@ const Staff = () => {
   };
 
   const renderStaffCard = (item, type) => (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md" key={item.id}>
-      <div className="flex justify-between p-4">
-        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-xl font-bold text-gray-700">
+    <div className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-lg hover:border-gray-200 transition-all duration-300 transform overflow-hidden" key={item.id}>
+      <div className="flex justify-between items-center p-6 pb-4">
+        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center text-xl font-semibold text-indigo-700 shadow-sm">
           {item.manager.charAt(0)}
         </div>
-        <div className="text-xl text-gray-500 cursor-pointer">⋯</div>
+        <button className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors duration-200">
+          <span className="text-gray-400 hover:text-gray-600">⋯</span>
+        </button>
       </div>
       
-      <div className="p-4">
-        <h3 className="text-base font-medium text-gray-800 m-0">{item.manager}</h3>
-        <p className="text-sm text-gray-500 mt-1 mb-4">{type === 'section' ? 'Section Manager' : 'Subsection Manager'}</p>
+      <div className="px-6 pb-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-1">{item.manager}</h3>
+        <p className="text-sm text-indigo-600 font-medium mb-5">{type === 'section' ? 'Section Manager' : 'Subsection Manager'}</p>
         
-        <div className="flex justify-between mb-4">
-          <div className="flex flex-col">
-            <span className="text-xs text-gray-500 mb-1">Department</span>
-            <span className="text-sm text-gray-800">{item.name}</span>
+        <div className="grid grid-cols-2 gap-4 mb-5">
+          <div>
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1 block">Department</span>
+            <span className="text-sm text-gray-900 font-medium">{item.name}</span>
           </div>
           
-          <div className="flex flex-col">
-            <span className="text-xs text-gray-500 mb-1">Hired Date</span>
-            <span className="text-sm text-gray-800">{item.hireDate}</span>
+          <div>
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1 block">Hired Date</span>
+            <span className="text-sm text-gray-900 font-medium">{item.hireDate}</span>
           </div>
         </div>
         
-        <div className="border-t border-gray-100 pt-4 mb-4">
-          <div className="flex items-center mb-1 text-sm text-gray-600">
-            <span className="mr-2">✉</span>
-            <span>{item.email}</span>
+        <div className="border-t border-gray-100 pt-4 mb-5 space-y-2">
+          <div className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">
+            <span className="mr-3 text-indigo-500">✉</span>
+            <span className="font-medium">{item.email}</span>
           </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <span className="mr-2">☎</span>
-            <span>{item.phone}</span>
+          <div className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">
+            <span className="mr-3 text-indigo-500">📞</span>
+            <span className="font-medium">{item.phone}</span>
           </div>
         </div>
         
         <div className="flex justify-between border-t border-gray-100 pt-4">
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-gray-500">Total</span>
-            <span className="text-base font-medium text-gray-800">{item.complaints.total}</span>
+          <div className="text-center">
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide block mb-1">Total</span>
+            <span className="text-lg font-semibold text-gray-900">{item.complaints.total}</span>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-gray-500">Pending</span>
-            <span className="text-base font-medium text-gray-800">{item.complaints.pending}</span>
+          <div className="text-center">
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide block mb-1">Pending</span>
+            <span className="text-lg font-semibold text-orange-600">{item.complaints.pending}</span>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-gray-500">Resolved</span>
-            <span className="text-base font-medium text-gray-800">{item.complaints.resolved}</span>
+          <div className="text-center">
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide block mb-1">Resolved</span>
+            <span className="text-lg font-semibold text-green-600">{item.complaints.resolved}</span>
           </div>
         </div>
       </div>
@@ -230,50 +232,67 @@ const Staff = () => {
   );
 
   return (
-    <div className="p-5 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
-        <h1 className="text-2xl font-medium text-gray-800 m-0">{getStaffCount()} Staff Members</h1>
-        <div className="flex items-center gap-4 flex-wrap">
-          <div className="relative w-72">
-            <input
-              type="text"
-              placeholder="Search staff..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full py-2 px-4 pr-10 border border-gray-200 rounded text-sm focus:outline-none focus:border-gray-400"
-            />
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-10 flex-wrap gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{getStaffCount()} Staff Members</h1>
+            <p className="text-gray-600">Manage your team and track performance</p>
           </div>
-          <button className="py-2 px-5 bg-gray-100 border border-gray-200 rounded text-sm">Filter</button>
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search staff..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-80 py-3 px-4 pl-12 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 shadow-sm"
+              />
+              <svg className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <button className="py-3 px-6 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm">
+              Filter
+            </button>
+          </div>
         </div>
-      </div>
 
-      {userRole === "district" && (
-        <>
-          <h2 className="text-xl font-medium text-gray-800 mt-8 mb-5">Sections</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8">
-            {filteredData.sections.map(section => renderStaffCard(section, 'section'))}
-          </div>
-          
-          <h2 className="text-xl font-medium text-gray-800 mt-8 mb-5">Sub-Sections</h2>
-          {filteredData.sections.map(section => (
-            <div key={section.id} className="mb-8">
-              <h3 className="text-base text-gray-600 mb-4">{section.name} Sub-Sections</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {section.subSections.map(subSection => renderStaffCard(subSection, 'subsection'))}
+        {userRole === "district" && (
+          <>
+            <div className="mb-12">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Sections</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredData.sections.map(section => renderStaffCard(section, 'section'))}
               </div>
             </div>
-          ))}
-        </>
-      )}
+            
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-8">Sub-Sections</h2>
+              {filteredData.sections.map(section => (
+                <div key={section.id} className="mb-10">
+                  <h3 className="text-lg font-semibold text-gray-700 mb-6 flex items-center">
+                    <span className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></span>
+                    {section.name} Sub-Sections
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {section.subSections.map(subSection => renderStaffCard(subSection, 'subsection'))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
-      {userRole === "section" && (
-        <>
-          <h2 className="text-xl font-medium text-gray-800 mt-8 mb-5">Sub-Sections</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filteredData.subSections.map(subSection => renderStaffCard(subSection, 'subsection'))}
+        {userRole === "section" && (
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">Sub-Sections</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredData.subSections.map(subSection => renderStaffCard(subSection, 'subsection'))}
+            </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 };

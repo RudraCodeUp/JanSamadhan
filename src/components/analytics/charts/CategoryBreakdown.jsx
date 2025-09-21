@@ -13,29 +13,47 @@ export const CategoryBreakdown = ({ complaints }) => {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6); // Show top 6 categories
   
-  // Generate random colors for categories
+  // Modern color palette
   const getColor = (index) => {
     const colors = [
-      "#3498db", "#2ecc71", "#f1c40f", "#e74c3c", 
-      "#9b59b6", "#1abc9c", "#d35400", "#34495e"
+      "#3b82f6", "#10b981", "#f59e0b", "#ef4444", 
+      "#8b5cf6", "#06b6d4", "#f97316", "#475569"
     ];
     return colors[index % colors.length];
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-lg font-semibold mb-4">Complaint Categories</h2>
+    <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 p-8 transition-all duration-300 hover:shadow-lg hover:bg-white/80">
+      <div className="flex items-center space-x-3 mb-8">
+        <div className="w-0.5 h-6 bg-gradient-to-b from-emerald-400 to-green-600 rounded-full"></div>
+        <h2 className="text-xl font-light text-slate-700">Category Breakdown</h2>
+      </div>
       
-      <div className="space-y-3">
+      <div className="space-y-6">
         {sortedCategories.map(([category, count], index) => (
-          <div key={category} className="relative">
-            <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium">{category}</span>
-              <span className="text-sm text-gray-500">{count}</span>
+          <div key={category} className="group">
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-sm font-medium text-slate-700">{category}</span>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-slate-500 font-light">{count}</span>
+                <span className="text-xs text-slate-400 font-light">
+                  ({((count / complaints.length) * 100).toFixed(1)}%)
+                </span>
+              </div>
             </div>
-            <div className="w-full bg-gray-200 rounded h-2.5">
+            <div className="relative">
+              <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                <div 
+                  className="h-3 rounded-full transition-all duration-700 ease-out shadow-sm group-hover:shadow-md" 
+                  style={{ 
+                    width: `${(count / complaints.length) * 100}%`,
+                    backgroundColor: getColor(index)
+                  }}
+                ></div>
+              </div>
+              {/* Subtle glow effect on hover */}
               <div 
-                className="h-2.5 rounded" 
+                className="absolute top-0 h-3 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm"
                 style={{ 
                   width: `${(count / complaints.length) * 100}%`,
                   backgroundColor: getColor(index)

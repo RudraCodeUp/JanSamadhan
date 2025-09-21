@@ -343,7 +343,7 @@ const AdminPage = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-        <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 transform transition-all duration-300 hover:scale-105">
+        <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 transform transition-all duration-300 ">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Admin Portal</h2>
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
