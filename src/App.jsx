@@ -9,6 +9,7 @@ import { ComplaintList } from './components/complaints/ComplaintList';
 import { ComplaintMap } from './components/map/ComplaintMap';
 import { Analytics } from './components/analytics/Analytics';
 import Staff from './components/dashboard/Staff';
+import AdminPage from './components/dashboard/AdminPage';
 
 function App() {
   const { isAuthenticated } = useAuthStore();
@@ -26,6 +27,10 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Routes>
+          {/* Admin page route without Layout */}
+          <Route path="/admin" element={<AdminPage />} />
+          
+          {/* All other routes with Layout */}
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
