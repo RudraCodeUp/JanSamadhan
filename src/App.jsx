@@ -13,9 +13,14 @@ import AdminPage from './components/dashboard/AdminPage';
 
 function App() {
   const { isAuthenticated } = useAuthStore();
+  const token = localStorage.getItem('token');
 
+  // If there's a token, consider the user authenticated
+  if (token && !isAuthenticated) {
+    useAuthStore.setState({ isAuthenticated: true });
+  }
   if (!isAuthenticated) {
-    return (
+    return (  
       <>
         <LoginForm />
         <Toaster position="top-right" />

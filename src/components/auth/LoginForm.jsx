@@ -15,6 +15,25 @@ export const LoginForm = () => {
     setIsLoading(true);
 
     try {
+      // Try department login first
+      const departmentResponse = await fetch('http://localhost:3001/jan/api/departments/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (departmentResponse.ok) {
+        const departmentData = await departmentResponse.json();
+        // Store department token and redirect
+        localStorage.setItem('token', departmentData.token);
+        toast.success('Department login successful!');
+        window.location.href = '/dashboard';
+        return;
+      }
+
+      // Fallback to regular login
       const success = await login(email, password);
       if (success) {
         toast.success('Login successful!');

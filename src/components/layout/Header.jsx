@@ -59,7 +59,9 @@ export const Header = () => {
               className="p-2.5 text-gray-500 hover:text-red-500 hover:bg-red-50/80 rounded-xl transition-all duration-200 group"
               title="Logout"
             >
-              <LogOut className="w-4 h-4 group- transition-transform duration-200" />
+              <LogOut onClick={() => {
+                logout();
+              }} className="w-4 h-4 group- transition-transform duration-200" />
             </button>
           </div>
         </div>
