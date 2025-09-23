@@ -32,6 +32,7 @@ export const Header = () => {
             name: data.department.name,
             email: data.department.email
           });
+            localStorage.setItem('departmentInfo', JSON.stringify(data.department));
         }
       }
     } catch (error) {

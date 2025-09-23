@@ -1,35 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import { PlusIcon, FunnelIcon, ArrowDownTrayIcon, MagnifyingGlassIcon, SparklesIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, FunnelIcon, ArrowDownTrayIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { ComplaintCard } from './ComplaintCard';
 import { ComplaintFilters } from './ComplaintFilters';
 import { BulkActions } from './BulkActions';
-import { useComplaintStore } from '../../store/complaintStore';
 
 export const ComplaintList = () => {
-  const { 
-    filteredComplaints, 
-    selectedComplaints, 
-    isLoading, 
-    fetchComplaints, 
-    filterComplaints,
-    clearSelection
-  } = useComplaintStore();
-  
+  const [complaints, setComplaints] = useState([]);
+  const [filteredComplaints, setFilteredComplaints] = useState([]);
+  const [selectedComplaints, setSelectedComplaints] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchComplaints();
-  }, [fetchComplaints]);
+  const fetchComplaints = async () => {
+    setIsLoading(true);
+    try {
+      // Get department info from localStorage
+      const departmentInfo = JSON.parse(localStorage.getItem('departmentInfo'));
+      
+      if (departmentInfo && departmentInfo.complaints) {
+        // Use complaints from localStorage
+        const complaintsArray = departmentInfo.complaints;
+        setComplaints(complaintsArray);
+        setFilteredComplaints(complaintsArray);
+      }
+    } catch (err) {
+      console.error('Error fetching complaints:', err);
+      setComplaints([]);
+      setFilteredComplaints([]);
+    }
+    setIsLoading(false);
+  };
+  
+  fetchComplaints();
+}, []);
+
+
+  // Simple search filter
+  useEffect(() => {
+    if (!searchQuery) {
+      setFilteredComplaints(complaints);
+    } else {
+      setFilteredComplaints(
+        complaints.filter(c =>
+        (c.subject?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          c.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          c.location?.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          c.userId?.name?.toLowerCase().includes(searchQuery.toLowerCase()))
+        )
+      );
+    }
+  }, [searchQuery, complaints]);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    filterComplaints({ searchQuery: query });
   };
 
-  const handleFilterChange = (filters) => {
-    filterComplaints({ ...filters, searchQuery });
-  };
+  const clearSelection = () => setSelectedComplaints([]);
 
   if (isLoading) {
     return (
@@ -52,20 +80,17 @@ export const ComplaintList = () => {
             {filteredComplaints.length} complaint{filteredComplaints.length !== 1 ? 's' : ''} found
           </p>
         </div>
-        
         <div className="flex space-x-2">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center space-x-2.5 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ease-out backdrop-blur-sm ${
-              showFilters 
-                ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 shadow-sm' 
-                : 'bg-white/80 text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
-            }`}
+            className={`flex items-center space-x-2.5 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ease-out backdrop-blur-sm ${showFilters
+              ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 shadow-sm'
+              : 'bg-white/80 text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+              }`}
           >
             <FunnelIcon className="w-4 h-4" />
             <span>Filters</span>
           </button>
-          
           <button className="flex items-center space-x-2.5 px-4 py-2.5 bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 text-green-700 border border-green-200 hover:border-green-300 rounded-xl font-medium text-sm transition-all duration-300 ease-out backdrop-blur-sm">
             <ArrowDownTrayIcon className="w-4 h-4" />
             <span>Export</span>
@@ -87,11 +112,10 @@ export const ComplaintList = () => {
             />
           </div>
         </div>
-        
         {selectedComplaints.length > 0 && (
           <div className="animate-in slide-in-from-right duration-300">
-            <BulkActions 
-              selectedCount={selectedComplaints.length} 
+            <BulkActions
+              selectedCount={selectedComplaints.length}
               onClear={clearSelection}
             />
           </div>
@@ -101,8 +125,8 @@ export const ComplaintList = () => {
       {/* Filters */}
       {showFilters && (
         <div className="animate-in slide-in-from-top duration-300">
-          <ComplaintFilters 
-            onFilterChange={handleFilterChange}
+          <ComplaintFilters
+            onFilterChange={() => { }} // Implement if needed
             onClose={() => setShowFilters(false)}
           />
         </div>
@@ -120,8 +144,8 @@ export const ComplaintList = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredComplaints.map((complaint, index) => (
-            <div 
-              key={complaint.id}
+            <div
+              key={complaint._id}
               className="animate-in fade-in duration-500"
               style={{ animationDelay: `${index * 50}ms` }}
             >
