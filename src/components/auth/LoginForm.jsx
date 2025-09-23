@@ -4,8 +4,8 @@ import { useAuthStore } from '../../store/authStore';
 import toast from 'react-hot-toast';
 
 export const LoginForm = () => {
-  const [email, setEmail] = useState('admin@city.gov');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuthStore();

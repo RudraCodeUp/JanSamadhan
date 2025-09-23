@@ -1,9 +1,51 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Bell, Search, Settings, LogOut, User } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 
 export const Header = () => {
   const { user, logout } = useAuthStore();
+  const token = localStorage.getItem('token');
+  const [departmentInfo, setDepartmentInfo] = useState(null);
+
+  const fetchDepartmentDetails = async () => {
+    if (!token) return;
+    
+    try {
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const departmentId = decodedToken.id;
+      
+      const response = await fetch(`http://localhost:3001/jan/api/departments/${departmentId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Department details:', data.department);
+        
+        // Store department info when user is null
+        if (!user) {
+          setDepartmentInfo({
+            name: data.department.name,
+            email: data.department.email
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching department details:', error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchDepartmentDetails();
+  }, [token, user]);
+
+  // Use department info when user is null
+  const displayName = user?.name || departmentInfo?.name || 'Unknown';
+  const displayEmail = user?.email || departmentInfo?.email || '';
 
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-gray-200/60 px-6 py-4 sticky top-0 z-50 shadow-sm">
@@ -37,20 +79,18 @@ export const Header = () => {
                 <div className="relative">
                   <img
                     src={user.avatar}
-                    alt={user.name}
+                    alt={displayName}
                     className="w-9 h-9 rounded-full object-cover ring-2 ring-gray-100 group-hover:ring-blue-200 transition-all duration-200"
                   />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
                 </div>
               ) : (
                 <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200">
                   <User className="w-4 h-4 text-white" />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
                 </div>
               )}
               <div className="hidden sm:block">
-                <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors duration-200">{user?.name}</p>
-                <p className="text-xs text-gray-500 capitalize tracking-wide">{user?.role} • {user?.department}</p>
+                <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors duration-200">{displayName}</p>
+                <p className="text-xs text-gray-500 capitalize tracking-wide">{user?.role || 'Department'} • {user?.department || displayEmail}</p>
               </div>
             </div>
             
